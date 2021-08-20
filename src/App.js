@@ -2,6 +2,7 @@ import { buildQueries } from '@testing-library/react';
 import React, { Component } from 'react';
 import styled, { createGlobalStyle } from "styled-components"
 import addbtn from './assets/add.svg'
+import rmv from './assets/remove.svg'
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -40,7 +41,16 @@ const BuyBox = styled.div`
   width: 35rem;
   height: 40rem;
   overflow-y: scroll;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 1rem;
 `
+const ContainerBuy = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
 const MapBox = styled.div`
   flex-wrap: wrap;
 `
@@ -53,82 +63,120 @@ const HeaderCard = styled.div`
   justify-content: space-between;
   align-items: center;
 `
+const HeaderCardBuy = styled.div`
+  border-bottom: solid #5bc0de 2px;
+  background-color: #5bc0de;
+  height: 2.125rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color:#ffff;
+`
+const ParagraphBuy = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+`
+
 const Container = styled.div`
   
 `
 const T = styled.div`
   display: flex;
 `
+const L = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`
+const CardBuy = styled.div`
+  height: 80px;
+  width: 515px;
+  border: solid #5bc0de 2px;
+  margin-bottom: 1rem;
+`
+
 class App extends Component {
   state = {
     buy: [],
+    cart: [],
     carro: [
       {
         id: 1,
         modelo: 'Jetta',
         montadora: 'Volkswagen',
-        preco: '144,000',
+        preco: 144000,
         tipo: 'Sedan'
       },
       {
         id: 2,
         modelo: 'Polo',
         montadora: 'Volkswagen',
-        preco: '70,000',
+        preco: 70000,
         tipo: 'hatch'
       },
       {
         id: 3,
         modelo: 'T-cross',
         montadora: 'Volkswagen',
-        preco: '123,000',
+        preco: 123000,
         tipo: 'suv'
       },
       {
         id: 4,
         modelo: 'Tigun r-line',
         montadora: 'Volkswagen',
-        preco: '146,000',
+        preco: 146000,
         tipo: 'suv'
       },
       {
         id: 5,
         modelo: 'Civic',
         montadora: 'honda',
-        preco: '115,000',
+        preco: 115000,
         tipo: 'Sedan'
       },
       {
         id: 6,
         modelo: 'Corolla',
         montadora: 'toyta',
-        preco: '110,000',
+        preco: 110000,
         tipo: 'Sedan'
       },
       {
         id: 7,
         modelo: 'Corolla cross',
         montadora: 'toyta',
-        preco: '184,000',
+        preco: 184000,
         tipo: 'suv'
       },
       {
         id: 8,
         modelo: 'Compass',
         montadora: 'jeep',
-        preco: '132,000',
+        preco: 132000,
         tipo: 'suv'
       },
       {
         id: 9,
         modelo: 'Golf gti',
         montadora: 'Volkswagen',
-        preco: '138,000',
+        preco: 138000,
         tipo: 'hatch'
       },
     ]
 
   }
+
+  
+
+  handleRmv = (id) => {
+    const { buy } = this.state
+    this.setState({
+      buy: buy.filter((item) => item.id !== id)
+    })
+  }
+
 
   handleAdd = (id) => {
     //adicionar | um elemento unico | na lista de compras 'buy'
@@ -137,7 +185,6 @@ class App extends Component {
     this.setState({
       buy: buy.concat(teste)
     })
-    console.log('aki', teste)
   }
 
   render() {
@@ -165,17 +212,26 @@ class App extends Component {
               </MapBox>
             ))}
           </BoxCards>
-          <BuyBox>
-            {this.state.buy.map((item, id) => (
-              <Card style={{ background: '' }}>
-                <HeaderCard>
-                  <b><p>{item.modelo}</p></b>
-                </HeaderCard>
-                <p><b>Tipo: </b>{item.tipo}</p>
-                <p><b>Preço: </b>{item.preco}</p>
-              </Card>
-            ))}
-          </BuyBox>
+          <ContainerBuy>
+            <BuyBox>
+              {this.state.buy.map((item, id) => (
+                <CardBuy style={{ background: '' }}>
+                  <HeaderCardBuy>
+                    <b><p>{item.modelo}</p></b>
+                    <AddImg onClick={() => this.handleRmv(item.id)} src={rmv} alt='' />
+                  </HeaderCardBuy>
+                  <ParagraphBuy>
+                    <p><b>Tipo: </b>{item.tipo}</p>
+                    <p><b>Preço: </b>{item.preco}</p>
+                  </ParagraphBuy>
+                </CardBuy>
+              ))}
+            </BuyBox>
+            <L>
+              <b><p>Total :</p></b>
+              <p> {this.state.buy.reduce((a,b) => a + b.preco, 0)} </p>
+            </L>
+          </ContainerBuy>
         </T>
       </Container>
     )
