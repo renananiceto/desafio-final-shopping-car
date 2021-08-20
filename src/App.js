@@ -229,7 +229,7 @@ class App extends Component {
             </BuyBox>
             <L>
               <b><p>Total :</p></b>
-              <p> {this.state.buy.reduce((a,b) => a + b.preco, 0)} </p>
+              <p> {this.state.buy.reduce((a, b) => a + b.preco, 0).toLocaleString('pt-br',{style:'currency', currency:'BRL'})} </p>
             </L>
           </ContainerBuy>
         </T>
